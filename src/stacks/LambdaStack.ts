@@ -9,6 +9,7 @@ import { Construct } from "constructs";
 import { join } from "path";
 
 export class LambdaStack extends Stack {
+  public readonly helloLambdaIntegration: LambdaIntegration;
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
@@ -17,7 +18,6 @@ export class LambdaStack extends Stack {
       handler: "hello.main",
       code: Code.fromAsset(join(__dirname, "..", "services")),
     });
+    this.helloLambdaIntegration = new LambdaIntegration(helloLambda);
   }
-
-  public readonly helloLambdaIntegration: LambdaIntegration;
 }
