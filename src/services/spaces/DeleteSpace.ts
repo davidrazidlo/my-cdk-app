@@ -1,20 +1,11 @@
-import {
-  DeleteItemCommand,
-  DynamoDBClient,
-  UpdateItemCommand,
-} from "@aws-sdk/client-dynamodb";
+import { DeleteItemCommand, DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 export async function deleteSpace(
   event: APIGatewayProxyEvent,
   ddbClient: DynamoDBClient
 ): Promise<APIGatewayProxyResult> {
-  if (
-    !event.queryStringParameters ||
-    !("id" in event.queryStringParameters) ||
-    !event.body
-  ) {
+  if (!event.queryStringParameters || !event.queryStringParameters.id) {
     const deleteResult = await ddbClient.send(
       new DeleteItemCommand({
         TableName: process.env.SPACES_TABLE_NAME!,
@@ -26,9 +17,20 @@ export async function deleteSpace(
   } else {
     return {
       statusCode: 400,
-      body: JSON.stringify({
-        error: "Missing query parameter 'id' or empty body",
-      }),
+      body: JSON.stringify({ message: "Missing query parameter 'id'" }),
     };
   }
+  await ddbClient.send(
+    new DeleteItemCommand({
+      TableName: process.env.SPACES_TABLE_NAME!,
+      Key: {
+        id: { S: event.queryStringParameters.id },
+      },
+    })
+  );
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Space deleted" }),
+  };
 }
