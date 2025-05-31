@@ -6,6 +6,7 @@ import {
 import { postSpaces } from "./PostSpaces";
 import { getSpaces } from "./GetSpaces";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { updateSpace } from "./UpdateSpace";
 
 const ddbClient = new DynamoDBClient({});
 
@@ -22,6 +23,9 @@ async function handler(
 
     case "POST":
       return await postSpaces(event, ddbClient);
+
+    case "PUT":
+      return await updateSpace(event, ddbClient);
 
     default:
       statusCode = 405;

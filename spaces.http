@@ -1,13 +1,28 @@
 
 GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=9c16ab77-3e66-4459-81a6-877ef5cd69a2
+
+###
+
+GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
+
 ###
 
 POST https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
 Content-Type: application/json
 
 {
-  "location": "Austin MN",
+  "location": "Rochester, MN",
   "body": "SPAM."
+}
+
+###
+
+PUT https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=9c16ab77-3e66-4459-81a6-877ef5cd69a2
+Content-Type: application/json
+
+{
+  "location": "Stewertville, MN",
+  "body": "Bowling."
 }
 
 ###
