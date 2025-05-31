@@ -1,6 +1,8 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { v4 } from "uuid";
+import { MissingFieldError, validateAsSpaceEntry } from "../shared/Validator";
+import { error } from "console";
 
 export async function postSpaces(
   event: APIGatewayProxyEvent,
@@ -8,6 +10,7 @@ export async function postSpaces(
 ): Promise<APIGatewayProxyResult> {
   const randomId = v4();
   let parsedBody: any;
+  validateAsSpaceEntry(parsedBody);
   try {
     parsedBody = event.body ? JSON.parse(event.body) : {};
   } catch (error) {
@@ -27,6 +30,12 @@ export async function postSpaces(
 
   const tableName = process.env.SPACES_TABLE_NAME;
   if (!tableName) {
+    if (error instanceof MissingFieldError) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: error.message }),
+      };
+    }
     throw new Error("Environment variable SPACES_TABLE_NAME is not set");
   }
   const result = await ddbClient.send(
