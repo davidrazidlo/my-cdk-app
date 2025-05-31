@@ -8,7 +8,8 @@
       "runtimeArgs": ["-r", "ts-node/register"],
       "program": "${file}",
       "env": {
-        "AWS_REGION": "us-east-1"
+        "AWS_REGION": "us-east-1",
+        "TABLE_NAME": "SpacesTable-3da4"
       }
     }
   ]

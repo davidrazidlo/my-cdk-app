@@ -1,13 +1,13 @@
 
-GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
+GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=9c16ab77-3e66-4459-81a6-877ef5cd69a2
 ###
 
 POST https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
 Content-Type: application/json
 
 {
-  "location": "New York",
-  "body": "Exploring the vibrant culture and art scene in NYC.",
+  "location": "Austin MN",
+  "body": "SPAM."
 }
 
 ###
