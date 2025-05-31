@@ -26,3 +26,5 @@ Content-Type: application/json
 }
 
 ###
+
+DELETE https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=a82b4c39-3d99-4500-8477-2434bb660951
