@@ -1,3 +1,7 @@
 
-GET https://33vctlegj0.execute-api.us-east-1.amazonaws.com/prod/spaces
+GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
+###
+
+POST https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
+
 ###

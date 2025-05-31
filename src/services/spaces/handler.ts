@@ -3,47 +3,37 @@ import {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
+import { postSpaces } from "./PostSpaces";
 
 async function handler(
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> {
+  let statusCode: number;
+  let message: string;
+
   switch (event.httpMethod) {
     case "GET":
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: "Hello from Lambda",
-        }),
-      };
+      statusCode = 200;
+      message = "Hello from Lambda GET method!";
       break;
 
     case "POST":
-      return {
-        statusCode: 201,
-        body: JSON.stringify({
-          message: "Resource created successfully",
-        }),
-      };
+      const response = postSpaces(event, ddbClient);
       break;
 
     default:
-      return {
-        statusCode: 405,
-        body: JSON.stringify({
-          message: "Method Not Allowed",
-        }),
-      };
+      statusCode = 405;
+      message = "Method Not Allowed - Only GET and POST are allowed.";
       break;
   }
 
-  const response: APIGatewayProxyResult = {
-    statusCode: 200,
-    body: "",
-  };
-
   console.log(event);
-  return response;
+
+  return {
+    statusCode,
+    body: JSON.stringify({ message }),
+  };
 }
 
 export { handler };
