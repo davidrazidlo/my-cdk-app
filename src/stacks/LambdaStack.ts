@@ -25,6 +25,15 @@ export class LambdaStack extends Stack {
       },
     });
 
+    // Grant the Lambda function permissions to read and write to the DynamoDB table
+    spacesLambda.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["dynamodb:PutItem", "dynamodb:Scan"],
+        resources: [props.spacesTable.tableArn],
+      })
+    );
+
     this.spacesLambdaIntegration = new LambdaIntegration(spacesLambda);
   }
 }

@@ -1,26 +1,36 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { APIGatewayAuthorizerResult, APIGatewayProxyEvent } from "aws-lambda";
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { v4 } from "uuid";
 
-const dbbClient = new DynamoDBClient({});
+const ddbClient = new DynamoDBClient({});
 
 export async function postSpaces(
   event: APIGatewayProxyEvent,
   ddbClient: DynamoDBClient
-): Promise<APIGatewayAuthorizerResult> {
+): Promise<APIGatewayProxyResult> {
   // Extract the user ID from the request context
 
-  // Return a dummy APIGatewayAuthorizerResult for now
-  return {
-    principalId: "user",
-    policyDocument: {
-      Version: "2012-10-17",
-      Statement: [
-        {
-          Action: "execute-api:Invoke",
-          Effect: "Allow",
-          Resource: "*",
+  const randomId = v4();
+  const item = JSON.parse(event.body || "{}");
+  const result = await ddbClient.send(
+    new PutItemCommand({
+      TableName: process.env.TABLE_NAME,
+      Item: {
+        id: {
+          S: randomId,
         },
-      ],
-    },
+        location: {
+          S: item.location,
+        },
+      },
+    })
+  );
+  console.log(result);
+  return {
+    statusCode: 201,
+    body: JSON.stringify({
+      message: "Space created successfully!",
+      id: randomId,
+    }),
   };
 }

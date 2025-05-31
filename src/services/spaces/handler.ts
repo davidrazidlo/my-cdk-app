@@ -4,6 +4,9 @@ import {
   Context,
 } from "aws-lambda";
 import { postSpaces } from "./PostSpaces";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+
+const ddbClient = new DynamoDBClient({});
 
 async function handler(
   event: APIGatewayProxyEvent,
@@ -20,7 +23,15 @@ async function handler(
 
     case "POST":
       const response = postSpaces(event, ddbClient);
-      break;
+      return response.then((result) => {
+        statusCode = 200;
+        message = "Space created successfully!";
+        return {
+          statusCode,
+          body: JSON.stringify({ message, result }),
+        };
+        //return result;
+      });
 
     default:
       statusCode = 405;
