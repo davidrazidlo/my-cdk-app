@@ -3,5 +3,11 @@ GET https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
 ###
 
 POST https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces
+Content-Type: application/json
+
+{
+  "location": "New York",
+  "body": "Exploring the vibrant culture and art scene in NYC.",
+}
 
 ###

@@ -1,16 +1,29 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { table } from "console";
 import { v4 } from "uuid";
 
 export async function postSpaces(
   event: APIGatewayProxyEvent,
   ddbClient: DynamoDBClient
 ): Promise<APIGatewayProxyResult> {
-  // Extract the user ID from the request context
-
   const randomId = v4();
-  const item = JSON.parse(event.body || "{}");
+  let parsedBody: any;
+  try {
+    parsedBody = event.body ? JSON.parse(event.body) : {};
+  } catch (error) {
+    console.error("Failed to parse request body", error);
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: "Invalid request body" }),
+    };
+  }
+
+  if (!parsedBody.location) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: "'location' is required" }),
+    };
+  }
 
   const tableName = process.env.SPACES_TABLE_NAME;
   if (!tableName) {
@@ -24,7 +37,7 @@ export async function postSpaces(
           S: randomId,
         },
         location: {
-          S: item.location,
+          S: parsedBody.location,
         },
       },
     })
