@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 
-PUT https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=9c16ab77-3e66-4459-81a6-877ef5cd69a2
+PUT https://i21hukkgp9.execute-api.us-east-1.amazonaws.com/prod/spaces?id=8c6178a8-b295-46cc-9122-66abaac5afc2
 Content-Type: application/json
 
 {

@@ -34,6 +34,9 @@ export class LambdaStack extends Stack {
       })
     );
 
+    // after you construct your NodejsFunction:
+    props.spacesTable.grantReadWriteData(spacesLambda);
+
     this.spacesLambdaIntegration = new LambdaIntegration(spacesLambda);
   }
 }
