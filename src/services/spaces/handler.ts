@@ -22,16 +22,7 @@ async function handler(
       break;
 
     case "POST":
-      const response = postSpaces(event, ddbClient);
-      return response.then((result) => {
-        statusCode = 200;
-        message = "Space created successfully!";
-        return {
-          statusCode,
-          body: JSON.stringify({ message, result }),
-        };
-        //return result;
-      });
+      return await postSpaces(event, ddbClient);
 
     default:
       statusCode = 405;
